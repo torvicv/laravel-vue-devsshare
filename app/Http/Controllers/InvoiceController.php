@@ -13,4 +13,18 @@ class InvoiceController extends Controller
             'invoices' => $invoices
         ], 200);
     }
+
+    public function search_invoice(Request $request) {
+        $search = $request->get('search');
+        if ($search !== null) {
+            $invoices = Invoice::with('customer')
+            ->where('id', 'LIKE', "%$search%")
+            ->get();
+        } else {
+            $invoices = Invoice::with('customer')->get();
+        }
+        return response()->json([
+            'invoices' => $invoices
+        ], 200);
+    }
 }
