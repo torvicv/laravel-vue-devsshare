@@ -6,6 +6,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import InvoiceIndex from './Components/invoices/Index.vue';
+import InvoiceCreate from './Components/invoices/New.vue';
 import NotFound from './Components/NotFound.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -13,6 +14,7 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 const routes = [
     { path: '/', component: InvoiceIndex},
+    { path: '/invoice/new', component: InvoiceCreate},
     { path: '/:pathMatch(.*)*', component: NotFound}
 ];
 
