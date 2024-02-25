@@ -31,6 +31,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(router)
+            .provide('router', router)
             .mount(el);
     },
     progress: {

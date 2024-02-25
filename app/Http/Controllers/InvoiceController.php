@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InvoiceRequest;
 use App\Models\Counter;
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -62,5 +64,20 @@ class InvoiceController extends Controller
         ];
 
         return response()->json($formData);
+    }
+
+    public function add_invoice(InvoiceRequest $request) {
+        $validatedInvoice = $request->safe()->except(['invoice_item']);
+        $invoice = Invoice::create($validatedInvoice);
+        foreach (json_decode($request->safe()->only('invoice_item')['invoice_item']) as $item) {
+            $invoiceItem['invoice_id'] = $invoice->id;
+            $invoiceItem['product_id'] = $item->id;
+            $invoiceItem['unit_price'] = $item->unit_price;
+            $invoiceItem['quantity'] = $item->quantity;
+
+            InvoiceItem::create($invoiceItem);
+        }
+
+
     }
 }
