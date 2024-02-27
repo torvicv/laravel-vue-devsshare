@@ -63,7 +63,7 @@ class InvoiceController extends Controller
             ]
         ];
 
-        return response()->json($formData);
+        return response()->json($formData, 200);
     }
 
     public function add_invoice(InvoiceRequest $request) {
@@ -79,5 +79,11 @@ class InvoiceController extends Controller
         }
 
 
+    }
+
+    public function get_invoice($id) {
+        $invoice = Invoice::with(['customer', 'invoice_items','invoice_items.product'])->find($id);
+
+        return response()->json(['invoice' => $invoice], 200);
     }
 }
