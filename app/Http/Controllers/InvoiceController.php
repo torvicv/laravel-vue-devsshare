@@ -86,4 +86,31 @@ class InvoiceController extends Controller
 
         return response()->json(['invoice' => $invoice], 200);
     }
+
+    public function delete_invoice_items($id) {
+        $invoiceItem = InvoiceItem::findOrFail($id);
+        $invoiceItem->delete();
+    }
+
+    public function delete_invoice($id) {
+        $invoice = Invoice::findOrFail($id);
+        $invoice->delete();
+    }
+
+    public function update_invoice (InvoiceRequest $request, $id) {
+        $invoice = Invoice::where('id', $id)->first();
+
+        $validatedInvoice = $request->safe()->except(['invoice_item']);
+        $invoice->update($validatedInvoice);
+        $invoice->invoice_items()->delete();
+        foreach (json_decode($request->safe()->only('invoice_item')['invoice_item']) as $item) {
+            $invoiceItem = new InvoiceItem;
+            $invoiceItem->invoice_id = $invoice->id;
+            $invoiceItem->product_id = $item->product_id;
+            $invoiceItem->unit_price = $item->unit_price;
+            $invoiceItem->quantity = $item->quantity;
+
+            $invoice->invoice_items()->save($invoiceItem);
+        }
+    }
 }

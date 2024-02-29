@@ -1,6 +1,9 @@
 <script setup>
     import axios from 'axios';
     import { onMounted, ref, defineProps } from 'vue';
+    import { useRouter } from 'vue-router';
+
+    const router = useRouter();
 
     let form = ref({ id: '' });
 
@@ -14,6 +17,10 @@
 
     onMounted(async () => {
         await getInvoice().catch((error) => console.log(error));
+        const metaTag = document.createElement('meta');
+        metaTag.setAttribute('name', 'csrf-token');
+        metaTag.setAttribute('content', '{{ csrf_token() }}');
+        document.head.appendChild(metaTag);
     });
 
     const getInvoice = async () => {
@@ -24,6 +31,15 @@
 
     const onPrint = async () => {
         window.print();
+    }
+
+    const onEdit = (id) => {
+        router.push('/invoice/edit/'+id);
+    }
+
+    const onDeleteInvoice = (id) => {
+        axios.delete('/api/delete_invoice/'+id, { params: {'id': id} });
+        router.push('/');
     }
 
 </script>
@@ -59,7 +75,7 @@
                         </li>
                         <li>
                             <!-- Select Btn Option -->
-                            <button class="selectBtnFlat">
+                            <button class="selectBtnFlat" @click="onEdit(form.id)">
                                 <i class=" fas fa-reply"></i>
                                 Edit
                             </button>
@@ -67,7 +83,7 @@
                         </li>
                         <li>
                             <!-- Select Btn Option -->
-                            <button class="selectBtnFlat ">
+                            <button class="selectBtnFlat " @click="onDeleteInvoice(form.id)">
                                 <i class=" fas fa-pencil-alt"></i>
                                 Delete
                             </button>

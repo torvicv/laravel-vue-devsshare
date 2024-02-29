@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class InvoiceRequest extends FormRequest
 {
@@ -26,7 +27,7 @@ class InvoiceRequest extends FormRequest
             'customer_id' => ['numeric', 'required'],
             'date' => ['date', 'required'],
             'due_date' => ['date', 'required'],
-            'number' => ['string', 'unique:invoices,number', 'required'],
+            'number' => ['string', Rule::unique('invoices')->ignore($this->id), 'required'],
             'reference' => ['required', 'string'],
             'discount' => ['nullable', 'numeric'],
             'sub_total' => ['required', 'numeric'],

@@ -8,6 +8,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import InvoiceIndex from './Components/invoices/Index.vue';
 import InvoiceCreate from './Components/invoices/New.vue';
 import InvoiceShow from './Components/invoices/Show.vue';
+import InvoiceEdit from './Components/invoices/Edit.vue';
 import NotFound from './Components/NotFound.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -17,6 +18,7 @@ const routes = [
     { path: '/', component: InvoiceIndex},
     { path: '/invoice/new', component: InvoiceCreate},
     { path: '/invoice/show/:id', component: InvoiceShow, props: true },
+    { path: '/invoice/edit/:id', component: InvoiceEdit, props: true },
     { path: '/:pathMatch(.*)*', component: NotFound}
 ];
 
